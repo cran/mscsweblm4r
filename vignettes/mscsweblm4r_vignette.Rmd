@@ -1,0 +1,280 @@
+---
+title: "{mscsweblm4r} vignette"
+author: "Phil Ferriere"
+date: "May 2016"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{mscsweblm4r vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r echo=FALSE}
+# Build with devtools::install(build_vignettes = TRUE)
+library("knitr")
+NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  purl = NOT_CRAN,
+  eval = NOT_CRAN
+)
+```
+
+## Package Installation
+
+You can either install the latest **stable** version from CRAN:
+
+```{r eval=FALSE}
+if ("mscsweblm4r" %in% installed.packages()[,"Package"] == FALSE) {
+  install.packages("mscsweblm4r", repos = "http://cran.us.r-project.org")
+}
+```
+
+Or, you can install the **development** version
+
+```{r eval=FALSE}
+if ("mscsweblm4r" %in% installed.packages()[,"Package"] == FALSE) {
+  if ("devtools" %in% installed.packages()[,"Package"] == FALSE) {
+    install.packages("devtools", repos = "http://cran.us.r-project.org")
+  }
+  devtools::install_github("philferriere/mscsweblm4r")
+}
+```
+
+## Package Loading and Configuration:
+
+After loading `{mscsweblm4r}` with `library()`, you **must** call `weblmInit()`
+before you can call any of the core `{mscsweblm4r}` functions.
+
+The `weblmInit()` configuration function will first check to see if the variable
+`MSCS_WEBLANGUAGEMODEL_CONFIG_FILE` exists in the system environment. If it does,
+the package will use that as the path to the configuration file.
+
+If `MSCS_WEBLANGUAGEMODEL_CONFIG_FILE` doesn't exist, it will look for the file
+`.mscskeys.json` in the current user's home directory (that's `~/.mscskeys.json`
+on Linux, and something like `C:\Users\Phil\Documents\.mscskeys.json` on
+Windows). If the file is found, the package will load the API key and URL from
+it.
+
+If using a file, please make sure it has the following structure:
+
+```json
+{
+  "weblanguagemodelurl": "https://api.projectoxford.ai/text/weblm/v1.0/",
+  "weblanguagemodelkey": "...MSCS Web Language Model API key goes here..."
+}
+```
+
+If no configuration file is found, `weblmInit()` will attempt to pick up its
+configuration from two Sys env variables instead:
+
+`MSCS_WEBLANGUAGEMODEL_URL` - the URL for the Web LM REST API.
+
+`MSCS_WEBLANGUAGEMODEL_KEY` -  your personal Web LM REST API key.
+
+`weblmInit()` needs to be called *only once*, after package load.
+
+## Error Handling Not Optional
+
+The MSCS Web LM API is a **[RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer)** API. HTTP requests over a network and the
+Internet can fail. Because of congestion, because the web site is down for
+maintenance, because of firewall configuration issues, etc. There are many
+possible points of failure.
+
+The API can also fail if you've **exhausted your call volume quota** or are **exceeding
+the API calls rate limit**. Unfortunately, MSCS does not expose an API you can query to check
+if you're about to exceed your quota for instance. The only way you'll know for
+sure is by **looking at the error code** returned after an API call has failed.
+
+Therefore, you must write your R code with failure in mind. Our preferred way is
+to use `tryCatch()`. Its mechanism may appear a bit daunting at first, but it
+is well [documented](http://www.inside-r.org/r-doc/base/signalCondition). We've
+also included many examples, as you'll see below.
+
+## Package Configuration with Error Handling
+
+Here's some sample code that illustrates how to use `tryCatch()`:
+
+```{r}
+library('mscsweblm4r')
+tryCatch({
+
+  weblmInit()
+
+}, error = function(err) {
+
+  geterrmessage()
+
+})
+```
+
+If `{mscsweblm4r}` cannot locate `.mscskeys.json` nor any of the configuration
+environment variables, the code above will generate the following output:
+
+```{r eval=FALSE}
+[1] "mscsweblm4r: could not load config info from Sys env nor from file"
+```
+
+Similarly, `weblmInit()` will fail if `{mscsweblm4r}` cannot find the
+`weblanguagemodelkey` key in `.mscskeys.json`, or fails to parse it correctly,
+etc. This is why it is so important to use `tryCatch()` with all `{mscsweblm4r}`
+functions.
+
+## Package API
+
+The five API calls exposed by `{mscsweblm4r}` are the following:
+
+```{r eval = FALSE}
+  # Retrieve a list of supported web language models
+  weblmListAvailableModels()
+```
+
+```{r eval = FALSE}
+  # Break a string of concatenated words into individual words
+  weblmBreakIntoWords(
+    textToBreak,                      # ASCII only
+    modelToUse = "body",              # "title"|"anchor"|"query"(default)|"body"
+    orderOfNgram = 5L,                # 1L|2L|3L|4L|5L(default)
+    maxNumOfCandidatesReturned = 5L   # Default: 5L
+  )
+```
+
+```{r eval = FALSE}
+  # Get the words most likely to follow a sequence of words
+  weblmGenerateNextWords(
+    precedingWords,                  # ASCII only
+    modelToUse = "title",            # "title"|"anchor"|"query"(default)|"body"
+    orderOfNgram = 4L,               # 1L|2L|3L|4L|5L(default)
+    maxNumOfCandidatesReturned = 5L  # Default: 5L
+  )
+```
+
+```{r eval = FALSE}
+  # Calculate joint probability a particular sequence of words will appear together
+  weblmCalculateJointProbability(
+    inputWords =,                    # ASCII only
+    modelToUse = "query",            # "title"|"anchor"|"query"(default)|"body"
+    orderOfNgram = 4L                # 1L|2L|3L|4L|5L(default)
+  )
+```
+
+```{r eval = FALSE}
+  # Calculate conditional probability a particular word will follow a given sequence of words
+  weblmCalculateConditionalProbability(
+    precedingWords,                  # ASCII only
+    continuations,                   # ASCII only
+    modelToUse = "title",            # "title"|"anchor"|"query"(default)|"body"
+    orderOfNgram = 4L                # 1L|2L|3L|4L|5L(default)
+  )
+```
+
+These functions return S3 class objects of the class `weblm`. The `weblm` object
+exposes formatted results (in `data.frame` format), the REST API JSON response
+(should you care), and the HTTP request (mostly for debugging purposes).
+
+## Sample Code
+
+The following code snippets illustrate how to use {mscsweblm4r} functions and
+show what results they return with toy examples. If after reviewing this code
+there is still confusion regarding how and when to use each function, please
+refer to the [original documentation](https://www.microsoft.com/cognitive-services/en-us/web-language-model-api/documentation).
+
+### List Available Models function
+
+```{r}
+tryCatch({
+
+  # Retrieve a list of supported web language models
+  weblmListAvailableModels()
+
+}, error = function(err) {
+
+ # Print error
+ geterrmessage()
+
+})
+```
+
+### Break Into Words function
+
+```{r}
+tryCatch({
+
+  # Break a sentence into words
+  weblmBreakIntoWords(
+    textToBreak = "testforwordbreak", # ASCII only
+    modelToUse = "body",              # "title"|"anchor"|"query"(default)|"body"
+    orderOfNgram = 5L,                # 1L|2L|3L|4L|5L(default)
+    maxNumOfCandidatesReturned = 5L   # Default: 5L
+  )
+
+}, error = function(err) {
+
+  # Print error
+  geterrmessage()
+
+})
+```
+
+### Generate Next Word function
+
+```{r}
+tryCatch({
+
+  # Generate next words
+  weblmGenerateNextWords(
+    precedingWords = "how are you",  # ASCII only
+    modelToUse = "title",            # "title"|"anchor"|"query"(default)|"body"
+    orderOfNgram = 4L,               # 1L|2L|3L|4L|5L(default)
+    maxNumOfCandidatesReturned = 5L  # Default: 5L
+  )
+
+}, error = function(err) {
+
+  # Print error
+  geterrmessage()
+
+})
+```
+
+### Calculate Joint Probability function
+
+```{r}
+tryCatch({
+
+  # Calculate joint probability a particular sequence of words will appear together
+  weblmCalculateJointProbability(
+    inputWords = c("where", "is", "San", "Francisco", "where is",
+                   "San Francisco", "where is San Francisco"),  # ASCII only
+    modelToUse = "query",                     # "title"|"anchor"|"query"(default)|"body"
+    orderOfNgram = 4L                         # 1L|2L|3L|4L|5L(default)
+  )
+
+}, error = function(err) {
+
+  # Print error
+  geterrmessage()
+
+})
+```
+
+### Calculate Conditional Probability function
+
+```{r}
+tryCatch({
+
+  # Calculate conditional probability a particular word will follow a given sequence of words
+  weblmCalculateConditionalProbability(
+    precedingWords = "hello world wide",       # ASCII only
+    continuations = c("web", "range", "open"), # ASCII only
+    modelToUse = "title",                      # "title"|"anchor"|"query"(default)|"body"
+    orderOfNgram = 4L                          # 1L|2L|3L|4L|5L(default)
+  )
+
+}, error = function(err) {
+
+  # Print error
+  geterrmessage()
+
+})
+```
