@@ -11,13 +11,13 @@ knitr::opts_chunk$set(
 
 ## ----eval=FALSE----------------------------------------------------------
 #  if ("mscsweblm4r" %in% installed.packages()[,"Package"] == FALSE) {
-#    install.packages("mscsweblm4r", repos = "http://cran.us.r-project.org")
+#    install.packages("mscsweblm4r")
 #  }
 
 ## ----eval=FALSE----------------------------------------------------------
 #  if ("mscsweblm4r" %in% installed.packages()[,"Package"] == FALSE) {
 #    if ("devtools" %in% installed.packages()[,"Package"] == FALSE) {
-#      install.packages("devtools", repos = "http://cran.us.r-project.org")
+#      install.packages("devtools")
 #    }
 #    devtools::install_github("philferriere/mscsweblm4r")
 #  }

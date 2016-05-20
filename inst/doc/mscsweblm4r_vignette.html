@@ -77,12 +77,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>Package Installation</h2>
 <p>You can either install the latest <strong>stable</strong> version from CRAN:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (<span class="st">&quot;mscsweblm4r&quot;</span> %in%<span class="st"> </span><span class="kw">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>] ==<span class="st"> </span><span class="ot">FALSE</span>) {
-  <span class="kw">install.packages</span>(<span class="st">&quot;mscsweblm4r&quot;</span>, <span class="dt">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)
+  <span class="kw">install.packages</span>(<span class="st">&quot;mscsweblm4r&quot;</span>)
 }</code></pre></div>
 <p>Or, you can install the <strong>development</strong> version</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (<span class="st">&quot;mscsweblm4r&quot;</span> %in%<span class="st"> </span><span class="kw">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>] ==<span class="st"> </span><span class="ot">FALSE</span>) {
   if (<span class="st">&quot;devtools&quot;</span> %in%<span class="st"> </span><span class="kw">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>] ==<span class="st"> </span><span class="ot">FALSE</span>) {
-    <span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>, <span class="dt">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)
+    <span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)
   }
   devtools::<span class="kw">install_github</span>(<span class="st">&quot;philferriere/mscsweblm4r&quot;</span>)
 }</code></pre></div>
@@ -357,6 +357,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt; hello world wide  open      -2.97    </span>
 <span class="co">#&gt; -------------------------------------</span></code></pre></div>
 </div>
+</div>
+<div id="demo-application" class="section level2">
+<h2>Demo Application</h2>
+<p>A test/demo Shiny web application is available <a href="https://github.com/philferriere/mscsshiny">here</a></p>
 </div>
 
 

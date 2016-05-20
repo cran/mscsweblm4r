@@ -1,6 +1,7 @@
-1e34229f64996af6908e9177ee13cee7 *DESCRIPTION
+673bea0e5e31a54a18a451f76644e752 *DESCRIPTION
 50a17636b3ba1b53d580bbf8e4b8c7ad *LICENSE
 ee0ac4d4f839839c69f0e112e554da6c *NAMESPACE
+fed523da06ea854c04930dd19a182ab4 *NEWS.md
 3187e2234d543e7eede72aec92359e9a *R/weblmBreakIntoWords.R
 c4c030a04ff1797ed3b4ab34e7a53a1f *R/weblmCalculateConditionalProbability.R
 3665611a6b7969194a2c3b93da088c3e *R/weblmCalculateJointProbability.R
@@ -11,11 +12,12 @@ b8c4fa1f4484ff48839da457eb4f7aaf *R/weblmListAvailableModels.R
 440fd6bb33d06d5a18468019c24bc241 *R/weblmObject.R
 4ef5ea1c378fc3c086d6e6ffa31b6bd4 *R/weblmPackage.R
 115ea47113018326bd0f449b7aed1132 *R/zzz.R
+b196ab51540fd9e1969cefa90db0fff5 *README.md
 f5ef9f6919de9b82be8d63b39aa21ba9 *build/vignette.rds
 7e6d65df23052c5b7ac8589f304efb3d *inst/Citation
-9f99457ab583e32eed79fc98e685b2e8 *inst/doc/mscsweblm4r_vignette.R
-5e8c2325d94724af45274e8f9abbadcb *inst/doc/mscsweblm4r_vignette.Rmd
-5565a34b37393ebaa50e9cfb935066ee *inst/doc/mscsweblm4r_vignette.html
+838c216814daaff9acd275deed6732b5 *inst/doc/mscsweblm4r_vignette.R
+e63118c0cf8ad512ac8efa9aaf4a38d5 *inst/doc/mscsweblm4r_vignette.Rmd
+7579b17c522ec28adfd7b92d4132403e *inst/doc/mscsweblm4r_vignette.html
 e79e378c61aac414d28c0827e2caab0a *man/mscsweblm4r.Rd
 19e3d7faebcce59a4f92a074efa76b92 *man/weblm.Rd
 7ec9ff59b0d23f01498066407475659f *man/weblmBreakIntoWords.Rd
@@ -30,4 +32,4 @@ ccbc605bb48134ca3d4abb5b4a7b6700 *tests/testthat/testCalculateConditionalProbabi
 9b4567e214d3410243e2bb331d246098 *tests/testthat/testCalculateJointProbability.R
 6e74c2cc214e5cba5022e3684ee1d8f1 *tests/testthat/testGenerateNextWords.R
 e47f968186b0a09f3a0bd362bcc925cc *tests/testthat/testListAvailableModels.R
-5e8c2325d94724af45274e8f9abbadcb *vignettes/mscsweblm4r_vignette.Rmd
+e63118c0cf8ad512ac8efa9aaf4a38d5 *vignettes/mscsweblm4r_vignette.Rmd
