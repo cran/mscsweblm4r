@@ -73,6 +73,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
+<div id="whats-the-web-lm-rest-api" class="section level2">
+<h2>What’s the Web LM REST API?</h2>
+<p><a href="https://www.microsoft.com/cognitive-services/en-us/documentation">Microsoft Cognitive Services</a> – formerly known as Project Oxford – are a set of APIs, SDKs and services that developers can use to add <a href="https://en.wikipedia.org/wiki/Artificial_intelligence">AI</a> features to their apps. Those features include emotion and video detection; facial, speech and vision recognition; and speech and language understanding.</p>
+<p>The <a href="https://www.microsoft.com/cognitive-services/en-us/web-language-model-api/documentation">Web Language Model REST API</a> provides tools for natural language processing <a href="https://en.wikipedia.org/wiki/Natural_language_processing">NLP</a>.</p>
+<p>Per Microsoft’s website, this API uses smoothed Backoff N-gram language models (supporting Markov order up to 5) that were trained on four web-scale American English corpora collected by Bing (web page body, title, anchor and query).</p>
+<p>The MSCS Web LM REST API supports the following lookup operations:</p>
+<ul>
+<li>Calculate the joint probability that a sequence of words will appear together.</li>
+<li>Compute the conditional probability that a specific word will follow an existing sequence of words.</li>
+<li>Get the list of words (completions) most likely to follow a given sequence of words.</li>
+<li>Insert spaces into a string of words adjoined together without any spaces (hashtags, URLs, etc.).</li>
+<li>Retrieve the list of supported language models.</li>
+</ul>
+</div>
 <div id="package-installation" class="section level2">
 <h2>Package Installation</h2>
 <p>You can either install the latest <strong>stable</strong> version from CRAN:</p>
@@ -102,8 +116,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p><code>MSCS_WEBLANGUAGEMODEL_KEY</code> - your personal Web LM REST API key.</p>
 <p><code>weblmInit()</code> needs to be called <em>only once</em>, after package load.</p>
 </div>
-<div id="error-handling-not-optional" class="section level2">
-<h2>Error Handling Not Optional</h2>
+<div id="error-handling" class="section level2">
+<h2>Error Handling</h2>
 <p>The MSCS Web LM API is a <strong><a href="https://en.wikipedia.org/wiki/Representational_state_transfer">RESTful</a></strong> API. HTTP requests over a network and the Internet can fail. Because of congestion, because the web site is down for maintenance, because of firewall configuration issues, etc. There are many possible points of failure.</p>
 <p>The API can also fail if you’ve <strong>exhausted your call volume quota</strong> or are <strong>exceeding the API calls rate limit</strong>. Unfortunately, MSCS does not expose an API you can query to check if you’re about to exceed your quota for instance. The only way you’ll know for sure is by <strong>looking at the error code</strong> returned after an API call has failed.</p>
 <p>Therefore, you must write your R code with failure in mind. Our preferred way is to use <code>tryCatch()</code>. Its mechanism may appear a bit daunting at first, but it is well <a href="http://www.inside-r.org/r-doc/base/signalCondition">documented</a>. We’ve also included many examples, as you’ll see below.</p>
@@ -361,6 +375,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="demo-application" class="section level2">
 <h2>Demo Application</h2>
 <p>A test/demo Shiny web application is available <a href="https://github.com/philferriere/mscsshiny">here</a></p>
+</div>
+<div id="related-microsoft-cognitive-services-packages" class="section level2">
+<h2>Related Microsoft Cognitive Services Packages</h2>
+<p><code>{mscstexta4r}</code>, a R Client for the Microsoft Cognitive Services <strong>Text Analytics</strong> REST API, is also available on <a href="https://cran.r-project.org/package=mscstexta4r">CRAN</a></p>
+</div>
+<div id="credits" class="section level2">
+<h2>Credits</h2>
+<p>All Microsoft Cognitive Services components are Copyright © Microsoft.</p>
 </div>
 
 
